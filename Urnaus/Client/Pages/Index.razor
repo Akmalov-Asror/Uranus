@@ -1,0 +1,366 @@
+﻿@page "/"
+@using Urnaus.Shared
+@inject IJSRuntime JsRuntime
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using Task = System.Threading.Tasks.Task;
+
+<PageTitle>Index</PageTitle>
+<head>
+    <script src="https://kit.fontawesome.com/82de9758c4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        ul {
+            margin-bottom: 0;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        header {
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header__container {
+            padding: 14px 0;
+            display: flex;
+            align-items: center;
+        }
+
+            .header__container img {
+                margin: 0 auto;
+            }
+
+        .header__list {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header__auth {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .header__auth a{
+            cursor:pointer;
+        }
+
+        .header__logo{
+            display:flex;
+            align-items:center;
+            margin-right: auto;
+            cursor:pointer;
+        }
+
+        .header__logo img{
+            width:42px;
+            height:42px;
+        }
+
+        .auth-registration {
+            padding: 10px 34px;
+            color: #fff;
+            background-color: #35A4D9;
+            border-radius: 6px;
+        }
+
+        .section__study {
+            background-image: url(https://t3.ftcdn.net/jpg/01/87/88/48/360_F_187884841_3CWTrFVgfxjLEeQYtYkLD8w1jRvM8zF1.webp);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .study {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .section__study-title {
+            color: #fff;
+            font-size: 52px;
+            text-align: center;
+            padding-top: 140px;
+        }
+
+        .section__study-descr {
+            color: #CBCBCB;
+            font-size: 22px;
+            text-align: center;
+        }
+
+        .section__study-btn {
+            padding: 22px 100px;
+            color: #fff;
+            background-color: #35A4D9;
+            border-radius: 10px;
+            margin-top: 60px;
+            margin-bottom: 180px;
+        }
+
+
+        /* ////////////////////////// */
+
+
+        .section__course {
+            margin-top: 108px;
+            margin-bottom: 150px;
+        }
+
+        .course__title {
+            color: #000;
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 72px;
+        }
+
+        .row {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .col-4 {
+            width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0px 4px 50px 0px rgba(0, 0, 0, 0.10);
+            padding: 0;
+            cursor: pointer;
+        }
+
+            .col-4 img {
+                width: 380px;
+            }
+
+            .col-4 h6 {
+                color: #000;
+                font-size: 24px;
+                padding-left: 30px;
+                margin: 0;
+            }
+
+            .col-4 p {
+                padding-left: 30px;
+                color: #000;
+                font-size: 14px;
+                padding-bottom: 25px;
+            }
+
+        .footer {
+            background: #111;
+            color: #949393;
+        }
+
+        .footer__container {
+            display: flex;
+            gap: 250px;
+            padding-top: 70px;
+            padding-bottom: 54px;
+        }
+
+        .footer__item {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .footer__logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor:pointer;
+        }
+
+        .footer__item img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+        }
+
+        .footer h6 {
+            color: #fff;
+        }
+
+        .footer h1 {
+            color: #fff;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .footer__p {
+            text-align: center;
+            color: #545454;
+            font-size: 12px;
+            padding-bottom: 24px;
+        }
+
+        .social__logo {
+            display: flex;
+            gap: 20px;
+            padding-top: 30px;
+        }
+
+        .footer__item a {
+            cursor: pointer;
+        }
+
+        .social__logo {
+            cursor: pointer;
+        }
+        
+        .header__a--active{
+            color: #113BA1;
+        }
+    </style>
+</head>
+<header>
+    <div class="container">
+        <div class="header__container">
+            <div class="header__logo" @onclick="ReloadPage">
+                <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+                <h1>URANUS</h1>
+            </div>
+            <ul class="header__list">
+                <li>
+                    <a href="">Все курсы</a>
+                </li>
+                <li>
+                    <a href="">Мои курсы</a>
+                </li>
+                <li>
+                    <a href="">Домашние задания</a>
+                </li>
+                <li>
+                    <a href="">О нас</a>
+                </li>
+                <li>
+                    <a href="">Контакты</a>
+                </li>
+            </ul>
+            <div class="header__auth">
+                <a @onclick="Login">Войти</a>
+                <a @onclick="Registration" class="auth-registration">Регистрация</a>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="section__study">
+    <div class="container study">
+        <h1 class="section__study-title">Хотите научиться профессионально инвестировать и всегда оставаться в плюсе?</h1>
+        <p class="section__study-descr">Грамотно разберем вашу финансовую ситуацию, разработаем стратегию и поможем эффективно инвестировать</p>
+        <a href="" class="section__study-btn">Записаться на курс</a>
+    </div>
+</section>
+<section class="section__course">
+    <div class="container">
+        <h1 class="course__title">Все курсы</h1>
+        <div class="row">
+            @if (courses.Count <= 0)
+            {
+                <h1>No courses...</h1>
+            }
+            else
+            {
+                @foreach (var course in courses.Take(6))
+                {
+                    <div class="col-4">
+                        <img src="@course.ImageUrl" alt="@course.Title">
+                        <h6>@course.Title</h6>
+                        <p>@course.Description</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container">
+        <div class="footer__container">
+            <div class="footer__item">
+                <div class="footer__logo" @onclick="ReloadPage">
+                    <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+                    <h1>URANUS</h1>
+                </div>
+                <div class="social__logo">
+                    <i class="fa-brands fa-facebook fa-2xl"></i>
+                    <i class="fa-brands fa-instagram fa-2xl"></i>
+                    <i class="fa-brands fa-telegram fa-2xl"></i>
+                </div>
+            </div>
+            <div class="footer__item">
+                <h6>ИНФОРМАЦИЯ</h6>
+                <a>Все курсы</a>
+                <a>Результаты учеников</a>
+                <a>О компании</a>
+            </div>
+            <div class="footer__item">
+                <h6>КОНТАКТЫ</h6>
+                <p>+998 98 369 90 69</p>
+                <p>info@uranusinvest.com</p>
+                <p>Location</p>
+            </div>
+        </div>
+        <p class="footer__p">
+            ©
+            2021 Uranus Invest
+        </p>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+@code
+{
+    List<Course> courses = new List<Course>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<List<Course>>("api/Course");
+        if (result != null)
+        {
+            courses = result;
+        }
+    }
+
+    void Login()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+    void Registration()
+    {
+        NavigationManager.NavigateTo("/registration");
+    }
+
+    private async Task ReloadPage()
+    {
+        await JsRuntime.InvokeVoidAsync("location.reload");
+    }
+}

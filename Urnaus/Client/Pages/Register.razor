@@ -1,0 +1,233 @@
+﻿@page "/registration"
+@using Urnaus.Server.Dto_s
+@using Task = System.Threading.Tasks.Task
+@using Urnaus.Client.Services
+@inject NavigationManager NavigationManager
+@inject UserService UserService
+
+<PageTitle>Registration</PageTitle>
+
+<head>
+    <script src="https://kit.fontawesome.com/82de9758c4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        p{
+            margin:0;
+        }
+
+        header {
+            box-shadow: 0px 10px 40px 0px rgba(61, 174, 223, 0.10);
+            padding: 20px 0;
+        }
+
+        a{
+            text-decoration:none;
+        }
+
+        .container-s {
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .logo img {
+                width: 42px;
+                height: 42px;
+            }
+
+            .logo h1 {
+                margin: 0;
+            }
+
+        .registration {
+            margin-top: 60px;
+            margin-bottom: 60px;
+        }
+
+        .registration__container {
+            border: 1px solid #DFDFDF;
+        }
+
+        .auth {
+            display: flex;
+        }
+
+            .auth a {
+                width: 50%;
+                text-align: center;
+                padding: 19px 59px;
+                font-size: 18px;
+                color: #404040;
+                font-weight: 400;
+                cursor:pointer;
+            }
+
+        .auth--active {
+            color: #000 !important;
+            font-weight: 700 !important;
+        }
+
+        .auth--not {
+            background-color: #f9f9f9;
+            border-left: 1px solid #DFDFDF;
+            border-bottom: 1px solid #DFDFDF;
+        }
+
+        .registration__fields {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+            .registration__fields h1 {
+                margin-top: 50px;
+                margin-bottom: 20px;
+                font-size: 28px;
+            }
+
+            .registration__fields input {
+                width: 460px;
+                padding: 17px 30px;
+                border-radius: 8px;
+                border: 1px solid #000;
+                opacity: 0.66;
+            }
+
+            .registration__fields p {
+                width: 460px;
+                line-height: 21px;
+            }
+
+                .registration__fields p a {
+                    color: #113BA1;
+                }
+
+        .login {
+            padding: 14px 75px;
+            background-color: #35A4D9;
+            color: #fff;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .forget__password {
+            color: #113BA1;
+            font-size: 18px;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .oauth {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .social {
+            width: 220px;
+            display: flex;
+            padding: 15px 33px;
+            gap: 12px;
+            box-shadow: 0px 10px 40px 0px rgba(17, 59, 161, 0.10);
+            border-radius: 10px;
+            align-items:center;
+            cursor:pointer;
+        }
+
+        .no_account {
+            margin-top: 80px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+            .no_account a {
+                color: #113BA1 !important;
+                cursor:pointer;
+            }
+
+    </style>
+</head>
+
+<header>
+    <div class="logo">
+        <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+        <h1>URANUS</h1>
+    </div>
+</header>
+<section class="registration">
+    <div class="container-s registration__container">
+        <div class="auth">
+            <a @onclick="SignUp" class="auth--active">Зарегистрироваться</a>
+            <a @onclick="Login" class="auth--not">Войти</a>
+        </div>
+        <div class="registration__fields">
+            <h1>Создайте свой аккаунт</h1>
+            <input type="text" placeholder="Имя и Фамилия" @bind="loginDto.FullName" />
+            <input type="email" placeholder="Email" @bind="loginDto.Email" />
+            <input type="password" placeholder="Пароль" @bind="loginDto.Password" />
+            <p>By clicking Sign In, you agree to our <a href="">Terms of Use</a> and our <a href="">Privacy Policy</a>.</p>
+            <a @onclick="OnValidSubmit" class="login" href="">Зарегистрироваться</a>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; margin-top: 47px; margin-bottom: 43px; opacity: 0.44;">
+            <hr style="width: 50%; border: 1px solid black; margin-left: 80px; margin-right: 20px;">
+            <p>или</p>
+            <hr style="width: 50%; border: 1px solid black; margin-left: 20px; margin-right: 80px;">
+        </div>
+        <div class="oauth">
+            <div class="social">
+                <i style="color:darkgreen" class="fa-brands fa-google"></i>
+                <p>Зарегистрироваться с Google</p>
+            </div>
+            <div class="social">
+                <i style="color:blue" class="fa-brands fa-facebook"></i>
+                <p>Зарегистрироваться с Facebook</p>    
+            </div>
+        </div>
+        <p class="no_account">Есть аккаунт? <a @onclick="Login">Войти</a></p>
+    </div>
+</section>
+
+@code {
+    private LoginDto loginDto = new LoginDto();
+    protected void Redirect(string s = "/login")
+    {
+        NavigationManager.NavigateTo(s);
+    }
+    async Task OnValidSubmit()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7030");
+
+        var response = await client.PostAsJsonAsync("/api/User", loginDto);
+
+        Redirect(response.IsSuccessStatusCode ? "/login" : "/register");
+    }
+
+    
+    void Login()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+    void SignUp()
+    {
+        NavigationManager.NavigateTo("/registration");
+    }
+}
