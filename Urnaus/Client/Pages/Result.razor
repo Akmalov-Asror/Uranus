@@ -1,0 +1,349 @@
+﻿@page "/result"
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        list-style: none;
+        text-decoration: none;
+    }
+
+    ul {
+        margin-bottom: 0;
+        padding: 0 !important;
+    }
+
+    a {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    header {
+        background-color: #fff;
+    }
+
+    .container-s {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .header__container {
+        padding: 14px 0;
+        display: flex;
+        align-items: center;
+    }
+
+        .header__container img {
+            margin: 0 auto;
+        }
+
+    .header__list {
+        display: flex;
+        gap: 30px;
+    }
+
+    .header__auth {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-left: auto;
+    }
+
+        .header__auth a {
+            cursor: pointer;
+        }
+
+    .header__logo {
+        display: flex;
+        align-items: center;
+        margin-right: auto;
+        cursor: pointer;
+    }
+
+        .header__logo img {
+            width: 42px;
+            height: 42px;
+        }
+
+    .contact__bg {
+        background-image: url(https://thumbs.dreamstime.com/z/homework-word-writkboard-text-books-school-books-38372083.jpg?w=992);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: top;
+        /* filter: brightness(40%); */
+        height: 300px;
+    }
+
+        .contact__bg h1 {
+            text-align: center;
+            font-size: 62px;
+            padding-top: 100px;
+            color: black;
+        }
+
+    .footer {
+        background: #111;
+        color: #949393 !important;
+    }
+
+    .footer__container {
+        display: flex;
+        gap: 250px;
+        padding-top: 70px;
+        padding-bottom: 54px;
+    }
+
+    .footer__item {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .footer__logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .footer__item img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+    }
+
+    .footer h6 {
+        color: #fff;
+    }
+
+    .footer h1 {
+        color: #fff;
+    }
+
+    h1 {
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .footer__p {
+        text-align: center;
+        color: #545454;
+        font-size: 12px;
+        padding-bottom: 24px;
+    }
+
+    .social__logo {
+        display: flex;
+        gap: 20px;
+        padding-top: 30px;
+    }
+
+    .footer__item a {
+        cursor: pointer;
+        color: #949393;
+    }
+
+    .social__logo {
+        cursor: pointer;
+    }
+
+    .content {
+        margin-top: 80px;
+        margin-bottom: 100px;
+    }
+
+    .content-title {
+        width: 330px;
+        box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.06);
+    }
+
+        .content-title h6 {
+            padding: 20px 30px;
+            border-bottom: 1px solid gray;
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+    .content h1 {
+        padding: 34px 30px;
+        box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.06);
+        width: 330px;
+        border-bottom: 1px solid gray;
+        font-size: 32px;
+    }
+
+    .content__container {
+        display: flex;
+        gap: 30px;
+    }
+
+    .values {
+        min-width: 850px;
+        padding: 40px 60px;
+        background: #35A4D9;
+        box-shadow: 0px 5px 40px 0px rgba(53, 164, 217, 0.14);
+        color: #fff;
+    }
+
+        .values h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .values p {
+            font-size: 18px;
+            line-height: 28px;
+            font-weight: 400;
+        }
+
+    .date {
+        margin-top: 95px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .active {
+        color: #113BA1 !important;
+    }
+
+</style>
+<body>  
+    <header>
+        <div class="container-s">
+            <div class="header__container">
+                <div class="header__logo">
+                    <img src="images/image 1.png" alt="">
+                </div>
+                <ul class="header__list">
+                    <li>
+                        <a @onclick="ToAllCourses">Все курсы</a>
+                    </li>
+                    <li>
+                        <a >Мои курсы</a>
+                    </li>
+                    <li>
+                        <a @onclick="HomeworkPage">Домашние задания</a>
+                    </li>
+                    <li>
+                        <a @onclick="ToAbout">О нас</a>
+                    </li>
+                    <li>
+                        <a @onclick="ToContact">Контакты</a>
+                    </li>
+                </ul>
+                <div class="header__auth">
+                    <a>@UserEmail</a>
+                    <a @onclick="LogOut" class="auth-registration">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div>
+            <img class="img-item" src="/images/image 10.png" alt="">
+        </div>  
+        <div class="container-s content">
+        <p class="content__descr">Главная страница >> Результаты учеников</p>
+     <div class="answer">
+          <p class="text-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elit velit, mattis id congue eu, eleifend non arcu. Nullam tempor porta malesuada. Cras dignissim consectetur cursus. Vivamus id maximus purus, ut porttitor ipsum. Cras finibus velit ac est rutrum, vitae scelerisque diam elementum. Mauris in dictum erat. Sed ac fringilla lorem. In hac habitasse platea dictumst. Sed efficitur diam nec augue venenatis pharetra. Ut varius eleifend augue sed eleifend.</p>
+
+     </div>
+        <div class="images-items">
+            <img src="images/трейдинг 1.png" alt="">
+
+            <img src="images/трейдинг 2 1.png" alt="">
+                
+            <img src="images/трейдинг 3 1.png" alt="">
+            
+            <img src="images/трейдинг 4.png" alt="">
+        </div>
+        <div class="Txt-items">
+            <p class="txt-text">Саша Кузнецова</p>
+            <p class="txt-text-1">Саша Кузнецова</p>
+            <p class="txt-text-2">Саша Кузнецова</p>
+            <p class="txt-text-3">Саша Кузнецова</p>
+        </div>
+ </div>
+    </section>
+    <footer class="footer">
+        <div class="container-s">
+            <div class="footer__container">
+                <div class="footer__item">
+                    <div class="footer__logo">
+                        <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+                        <h1>URANUS</h1>
+                    </div>
+                    <div class="social__logo">
+                        <i class="fa-brands fa-facebook fa-2xl"></i>
+                        <i class="fa-brands fa-instagram fa-2xl"></i>
+                        <i class="fa-brands fa-telegram fa-2xl"></i>
+                    </div>
+                </div>
+                <div class="footer__item">
+                    <h6>ИНФОРМАЦИЯ</h6>
+                    <a>Все курсы</a>
+                    <a>Результаты учеников</a>
+                    <a>О компании</a>
+                </div>
+                <div class="footer__item">
+                    <h6>КОНТАКТЫ</h6>
+                    <p>+998 98 369 90 69</p>
+                    <p>info@uranusinvest.com</p>
+                    <p>Location</p>
+                </div>
+            </div>
+            <p class="footer__p">
+                ©
+                2021 Uranus Invest
+            </p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+</body>
+
+@code {
+    private string UserEmail { get; set; } = string.Empty;
+        
+    private async System.Threading.Tasks.Task GetEmailFromLocalStorage()
+    {
+        var email = await JsRuntime.InvokeAsync<string>("localStorage.getItem", "email");
+
+        if (!string.IsNullOrEmpty(email))
+        {
+            UserEmail = email;
+        }
+    }
+    void ToContact()
+    {
+        NavigationManager.NavigateTo("/contact");
+    }
+
+    void ToAllCourses()
+    {
+        NavigationManager.NavigateTo("/allcourses");
+    }
+    void ToAbout()
+    {
+        NavigationManager.NavigateTo("/aboutus");
+    }
+
+    void HomeworkPage()
+    {
+        NavigationManager.NavigateTo("/homework");
+    }
+    private async System.Threading.Tasks.Task ClearLocalStorage()
+    {
+        await JsRuntime.InvokeVoidAsync("clearLocalStorage");
+    }
+    async void LogOut()
+    {
+        await ClearLocalStorage();
+        NavigationManager.NavigateTo("/");
+    }
+}

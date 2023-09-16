@@ -4,9 +4,73 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
+        <header>
+            <div class="logo">
+                <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+                <h1>URANUS</h1>
+            </div>
+        </header>
+        <section class="section__error">
+            <h1>404</h1>
+            <h2>Страница не найдена</h2>
+            <p>Страница с указанным адресом не существует, либо в данный момент она недоступна</p>
+        </section>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                list-style: none;
+                text-decoration: none;
+            }
+
+            h1 {
+                margin: 0;
+            }
+
+            header {
+                box-shadow: 0px 10px 40px 0px rgba(61, 174, 223, 0.10);
+                padding: 20px 0;
+            }
+
+            .logo {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+                .logo img {
+                    width: 42px;
+                    height: 42px;
+                }
+
+            .section__error {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                height: 70vh;
+            }
+
+                .section__error h1 {
+                    font-size: 144px;
+                    letter-spacing: 7.2px;
+                    color: #35A4D9;
+                }
+
+                .section__error h2 {
+                    font-size: 64px;
+                    color: #35A4D9;
+                }
+
+                .section__error p {
+                    font-size: 24px;
+                    line-height: 35px;
+                    width: 680px;
+                    text-align: center;
+                }
+        </style>
     </NotFound>
 </Router>

@@ -18,4 +18,6 @@ public class CourseController : ControllerBase
         var courses = await _courseRepository.GetAll();
         return Ok(courses);
     }
+
+    
 }

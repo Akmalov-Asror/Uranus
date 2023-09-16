@@ -1,11 +1,11 @@
-﻿@page "/"
+﻿@page "/allcourses"
 @using Urnaus.Shared
-@inject IJSRuntime JsRuntime
-@inject HttpClient Http
+@using Task = System.Threading.Tasks.Task
 @inject NavigationManager NavigationManager
-@using Task = System.Threading.Tasks.Task;
+@inject HttpClient Http
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Uranus</PageTitle>
+
 <head>
     <script src="https://kit.fontawesome.com/82de9758c4.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -19,22 +19,24 @@
             text-decoration: none;
         }
 
+        .container-s {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         ul {
             margin-bottom: 0;
+            padding: 0 !important;
         }
 
         a {
             color: #000;
             text-decoration: none;
+            cursor: pointer;
         }
 
         header {
             background-color: #fff;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
         }
 
         .header__container {
@@ -56,23 +58,7 @@
             display: flex;
             gap: 20px;
             align-items: center;
-            margin: 0 auto;
-        }
-
-        .header__auth a{
-            cursor:pointer;
-        }
-
-        .header__logo{  
-            display:flex;
-            align-items:center;
-            margin-right: auto;
-            cursor:pointer;
-        }
-
-        .header__logo img{
-            width:42px;
-            height:42px;
+            margin-left: auto;
         }
 
         .auth-registration {
@@ -82,45 +68,40 @@
             border-radius: 6px;
         }
 
-        .section__study {
-            background-image: url(https://t3.ftcdn.net/jpg/01/87/88/48/360_F_187884841_3CWTrFVgfxjLEeQYtYkLD8w1jRvM8zF1.webp);
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-        .study {
+        .header__logo {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            gap: 60px;
+            margin-right: auto;
+            cursor: pointer;
         }
 
-        .section__study-title {
-            color: #fff;
-            font-size: 52px;
-            text-align: center;
-            padding-top: 140px;
+        .header__auth a {
+            cursor: pointer;
         }
 
-        .section__study-descr {
-            color: #CBCBCB;
-            font-size: 22px;
-            text-align: center;
+        .header__logo img {
+            width: 42px;
+            height: 42px;
         }
 
-        .section__study-btn {
-            padding: 22px 100px;
-            color: #fff;
-            background-color: #35A4D9;
-            border-radius: 10px;
-            margin-top: 60px;
-            margin-bottom: 180px;
+        .active {
+            color: #113BA1;
         }
 
+        .contact__bg {
+            background-image: url(https://www.shutterstock.com/image-photo/elearning-online-education-concept-learn-260nw-2056510169.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+        }
 
-        /* ////////////////////////// */
-
+            .contact__bg h1 {
+                text-align: center;
+                font-size: 62px;
+                padding-top: 100px;
+                color: white;
+            }
 
         .section__course {
             margin-top: 108px;
@@ -170,7 +151,7 @@
 
         .footer {
             background: #111;
-            color: #949393;
+            color: #949393 !important;
         }
 
         .footer__container {
@@ -190,7 +171,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            cursor:pointer;
+            cursor: pointer;
         }
 
         .footer__item img {
@@ -226,6 +207,7 @@
             display: flex;
             gap: 20px;
             padding-top: 30px;
+            cursor: pointer;
         }
 
         .footer__item a {
@@ -235,51 +217,52 @@
         .social__logo {
             cursor: pointer;
         }
-        
-        .header__a--active{
-            color: #113BA1;
+
+        .load {
+            width: 320px;
+            padding: 20px 100px;
+            background-color: #35A4D9;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
         }
     </style>
 </head>
+
 <header>
-    <div class="container">
+    <div class="container-s">
         <div class="header__container">
-            <div class="header__logo" @onclick="ReloadPage">
+            <div @onclick="ToMain" class="header__logo">
                 <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
                 <h1>URANUS</h1>
             </div>
             <ul class="header__list">
                 <li>
-                    <a @onclick="ToAllCourses">Все курсы</a>
+                    <a @onclick="ToCourses">Все курсы</a>
                 </li>
                 <li>
-                    <a >Мои курсы</a>
+                    <a @onclick="UserCourseById">Мои курсы</a>
                 </li>
                 <li>
-                    <a @onclick="Homework">Домашние задания</a>
+                    <a @onclick="HomeworkPage">Домашние задания</a>
                 </li>
                 <li>
-                    <a @onclick="ToAbout">О нас</a>
+                    <a href="" class="active">О нас</a>
                 </li>
                 <li>
                     <a @onclick="ToContact">Контакты</a>
                 </li>
             </ul>
-
-                <div class="header__auth">
-                    <a @onclick="Login">Войти</a>
-                    <a @onclick="Registration" class="auth-registration">Регистрация</a>
-                </div>
-           
+            <div class="header__auth">
+                <a @onclick="ToLogin">Войти</a>
+                <a @onclick="ToReg" class="auth-registration">Регистрация</a>
+            </div>
         </div>
     </div>
 </header>
-<section class="section__study">
-    <div class="container study">
-        <h1 class="section__study-title">Хотите научиться профессионально инвестировать и всегда оставаться в плюсе?</h1>
-        <p class="section__study-descr">Грамотно разберем вашу финансовую ситуацию, разработаем стратегию и поможем эффективно инвестировать</p>
-        <a href="" class="section__study-btn">Записаться на курс</a>
-    </div>
+<section class="contact__bg">
+    <h1>Все курсы</h1>
 </section>
 <section class="section__course">
     <div class="container">
@@ -291,7 +274,7 @@
             }
             else
             {
-                @foreach (var course in courses.Take(6))
+                @foreach (var course in courses.Take(displayCount))
                 {
                     <div class="col-4">
                         <img src="@course.ImageUrl" alt="@course.Title">
@@ -300,6 +283,10 @@
                     </div>
                 }
             }
+            @if (displayCount < courses.Count)
+            {
+                <a @onclick="LoadMore" class="load">Загрузить еще</a>
+            }
         </div>
     </div>
 </section>
@@ -307,7 +294,7 @@
     <div class="container">
         <div class="footer__container">
             <div class="footer__item">
-                <div class="footer__logo" @onclick="ReloadPage">
+                <div @onclick="ToMain" class="footer__logo">
                     <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
                     <h1>URANUS</h1>
                 </div>
@@ -338,19 +325,16 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
-@code
-{
-    List<Course> courses = new List<Course>();
-    private string UserEmail { get; set; } = string.Empty;
-    private async System.Threading.Tasks.Task GetEmailFromLocalStorage()
-    {
-        var email = await JsRuntime.InvokeAsync<string>("localStorage.getItem", "email");
+@code {
+    private int displayCount = 15;
 
-        if (!string.IsNullOrEmpty(email))
-        {
-            UserEmail = email;
-        }
+    private void LoadMore()
+    {
+        displayCount += 6;
     }
+
+    List<Course> courses = new List<Course>();
+
     protected override async Task OnInitializedAsync()
     {
         var result = await Http.GetFromJsonAsync<List<Course>>("api/Course");
@@ -360,51 +344,42 @@
         }
     }
 
-    void Login()
+    void ToLogin()
     {
         NavigationManager.NavigateTo("/login");
     }
 
-    void Registration()
+    void ToReg()
     {
         NavigationManager.NavigateTo("/registration");
     }
 
-    private async Task ReloadPage()
+    void ToMain()
     {
-        await JsRuntime.InvokeVoidAsync("location.reload");
+        NavigationManager.NavigateTo("/");
     }
+
     void ToContact()
     {
         NavigationManager.NavigateTo("/contact");
     }
 
-    void ToAllCourses()
-    {
-        NavigationManager.NavigateTo("/allcourses");
-    }
     void ToAbout()
     {
         NavigationManager.NavigateTo("/aboutus");
     }
 
-    void Homework()
+    void HomeworkPage()
     {
         NavigationManager.NavigateTo("/homework");
     }
-
-    void UserCourse()
+    void ToCourses()
     {
-        NavigationManager.NavigateTo("/userCourse");
-    }
-    private async System.Threading.Tasks.Task ClearLocalStorage()
-    {
-        await JsRuntime.InvokeVoidAsync("clearLocalStorage");
+        NavigationManager.NavigateTo("/allcourses");
     }
 
-    async void LogOut()
+    void UserCourseById()
     {
-        await ClearLocalStorage();
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/usersCourse");
     }
 }

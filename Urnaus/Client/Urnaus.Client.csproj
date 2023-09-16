@@ -7,12 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Result.razor~RF5af8f0.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.10" PrivateAssets="all" />
+    <PackageReference Include="MimeKit" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\Urnaus.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 </Project>

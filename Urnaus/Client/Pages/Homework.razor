@@ -1,0 +1,433 @@
+﻿@page "/homework"
+@using System.Text.Json
+@using Microsoft.Win32.SafeHandles
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+@inject IJSRuntime JsRuntime
+<head>
+    <script src="https://kit.fontawesome.com/82de9758c4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        ul {
+            margin-bottom: 0;
+            padding: 0;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        header {
+            background-color: #fff;
+        }
+
+        .container-s {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header__container {
+            padding: 14px 0;
+            display: flex;
+            align-items: center;
+        }
+
+            .header__container img {
+                margin: 0 auto;
+            }
+
+        .header__list {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header__auth {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .auth-registration {
+            padding: 10px 34px;
+            color: #fff;
+            background-color: #35A4D9;
+            border-radius: 6px;
+        }
+
+        .footer {
+            background: #111;
+            color: #949393 !important;
+        }
+
+        .footer__container {
+            display: flex;
+            gap: 250px;
+            padding-top: 70px;
+            padding-bottom: 54px;
+        }
+
+        .footer__item {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .footer__logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .footer__item img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+        }
+
+        .footer h6 {
+            color: #fff;
+        }
+
+        .footer h1 {
+            color: #fff;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .footer__p {
+            text-align: center;
+            color: #545454;
+            font-size: 12px;
+            padding-bottom: 24px;
+        }
+
+        .social__logo {
+            display: flex;
+            gap: 20px;
+            padding-top: 30px;
+        }
+
+        .footer__item a {
+            cursor: pointer;
+            color: #949393;
+        }
+
+        .social__logo {
+            cursor: pointer;
+        }
+
+        .header__logo img {
+            width: 42px;
+            height: 42px;
+        }
+
+        .header__logo {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            cursor: pointer;
+        }
+
+        .contact__bg {
+            background-image: url(https://t3.ftcdn.net/jpg/01/90/68/76/240_F_190687625_tKPXD6c6wN4v3VDyZQIn3Mor0Ia6pVbZ.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .aboutus__info {
+            display: flex;
+            gap: 30px;
+            margin-top: 110px;
+            margin-bottom: 130px;
+        }
+
+        .aboutus__p {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+            .aboutus__p p {
+                width: 540px;
+                font-size: 18px;
+                line-height: 26px;
+            }
+
+        .row {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .col-4 {
+            width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 0;
+            cursor: pointer;
+            background: #FFF;
+            box-shadow: 0px 4px 50px 0px rgba(0, 0, 0, 0.10);
+        }
+
+            .col-4 img {
+                width: 380px;
+            }
+
+            .col-4 h6 {
+                color: #113BA1;
+                font-size: 24px;
+                margin: 0;
+            }
+
+            .col-4 p {
+                color: #000;
+                font-size: 14px;
+                padding-bottom: 25px;
+            }
+
+        .teacher h1 {
+            padding-top: 30px;
+            margin-bottom: 80px;
+        }
+
+        .load {
+            width: 320px;
+            padding: 20px 100px;
+            background-color: #35A4D9;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 130px;
+        }
+
+        .partners {
+            display: flex;
+            justify-content: space-between;
+            padding: 33px 0;
+        }
+
+        .section__partners {
+            margin-bottom: 150px;
+        }
+
+        .active {
+            color: #113BA1;
+        }
+
+        .item {
+            color: #FFF;
+            font-family: Formular;
+            font-size: 62px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+        .text-item{
+            color: #000;
+            font-family: Formular;
+            font-size: 32px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 31px; /* 140.909% */
+            padding-left: 10px;
+        }
+
+        .first-text{
+            color: #000;
+            font-family: Formular;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+    </style>
+</head>
+
+<header>
+    <div class="container-s">
+        <div class="header__container">
+            <div class="header__logo" @onclick="ToMain">
+                <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+                <h1>URANUS</h1>
+            </div>
+            <ul class="header__list">
+                <li>
+                    <a @onclick="ToCourses">Все курсы</a>
+                </li>
+                <li>
+                    <a @onclick="UserCourseById">Мои курсы</a>
+                </li>
+                <li>
+                    <a @onclick="HomeworkPage">Домашние задания</a>
+                </li>
+                <li>
+                    <a href="" class="active">О нас</a>
+                </li>
+                <li>
+                    <a @onclick="ToContact">Контакты</a>
+                </li>
+            </ul>
+            <div class="header__auth">
+                <a @onclick="ToLogin">Войти</a>
+                <a @onclick="ToReg" class="auth-registration">Регистрация</a>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="contact__bg">
+    <h1 class="item">Домашние задания</h1>
+</section>
+<section style="padding-bottom: 50px">
+    <div class="container-s teacher">
+        <h1 class="first-text">Главная страница » Домашние задания</h1>
+        <div class="row">
+            @if (homeworks.Count <= 0)
+            {
+                <h1>No teachers...</h1>
+            }
+            else
+            {
+                @foreach (var homework in homeworks.Take(displayCount))
+                {
+                    <div @onclick="() => OnValidSubmit(homework)" class="col-4">
+                        <img src="@homework.ImageUrl" alt="@homework.Description">
+                        <p class="text-item">@homework.Description</p>
+                    </div>
+                }
+            }
+            @if (displayCount < homeworks.Count)
+            {
+                <a @onclick="LoadMore" class="load">Загрузить еще</a>
+            }
+
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container-s">
+        <div class="footer__container">
+            <div class="footer__item">
+                <div class="footer__logo" @onclick="ToMain">
+                    <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+                    <h1>URANUS</h1>
+                </div>
+                <div class="social__logo">
+                    <i class="fa-brands fa-facebook fa-2xl"></i>
+                    <i class="fa-brands fa-instagram fa-2xl"></i>
+                    <i class="fa-brands fa-telegram fa-2xl"></i>
+                </div>
+            </div>
+            <div class="footer__item">
+                <h6>ИНФОРМАЦИЯ</h6>
+                <a>Все курсы</a>
+                <a>Результаты учеников</a>
+                <a>О компании</a>
+            </div>
+            <div class="footer__item">
+                <h6>КОНТАКТЫ</h6>
+                <p>+998 98 369 90 69</p>
+                <p>info@uranusinvest.com</p>
+                <p>Location</p>
+            </div>
+        </div>
+        <p class="footer__p">
+            ©
+            2021 Uranus Invest
+        </p>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+@code {
+    List<Urnaus.Shared.Homework> homeworks = new List<Urnaus.Shared.Homework>();
+    private int displayCount = 15;
+    protected override async Task OnInitializedAsync()
+    {
+        List<Urnaus.Shared.Homework> result = await Http.GetFromJsonAsync<List<Urnaus.Shared.Homework>>("api/Homework");
+        if (result != null)
+        {
+            homeworks = result;
+        }
+    }
+    private void LoadMore()
+    {
+        displayCount += 6;
+    }
+
+    void ToCourses()
+    {
+        NavigationManager.NavigateTo("/allcourses");
+    }
+
+    void ToContact()
+    {
+        NavigationManager.NavigateTo("/contact");
+    }
+
+    void ToLogin()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+    void ToReg()
+    {
+        NavigationManager.NavigateTo("/registration");
+    }
+
+    void ToMain()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    void HomeworkPage()
+    {
+        NavigationManager.NavigateTo("/homework");
+    }
+
+    void TaskInUser()
+    {
+        NavigationManager.NavigateTo("/task");
+    }
+
+    void UserCourseById()
+    {
+        NavigationManager.NavigateTo("/usersCourse");
+    }
+
+    async Task OnValidSubmit(Urnaus.Shared.Homework homework)
+    {
+        await SaveToLocalStorage("TaskId", homework.Task.Id.ToString());
+        NavigationManager.NavigateTo("/task");
+    }
+
+    private async Task SaveToLocalStorage(string key, string value)
+    {
+        await JsRuntime.InvokeVoidAsync("localStorage.setItem", key, value);
+    }
+}

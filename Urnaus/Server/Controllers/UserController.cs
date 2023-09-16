@@ -30,4 +30,10 @@ public class UserController : ControllerBase
         return Ok();
         
     }
+    [HttpGet("getCourse")]
+    public async Task<IActionResult> GetUsersCourse(string email)
+    {
+        var courses = await _usersRepository.GetUserCourses(email);
+        return Ok(courses);
+    }
 }

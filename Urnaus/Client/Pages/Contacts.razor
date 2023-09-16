@@ -1,0 +1,391 @@
+﻿@page "/contact"
+@using Urnaus.Shared
+@using Task = System.Threading.Tasks.Task
+@inject NavigationManager NavigationManager
+
+<PageTitle>Uranus</PageTitle>
+
+<head>
+    <script src="https://kit.fontawesome.com/82de9758c4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        ul {
+            margin-bottom: 0;
+            padding: 0;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        header {
+            background-color: #fff;
+        }
+
+        .header__container {
+            padding: 14px 0;
+            display: flex;
+            align-items: center;
+        }
+
+            .header__container img {
+                margin: 0 auto;
+            }
+
+        .header__list {
+            display: flex;
+            gap: 30px;
+        }
+
+        .header__auth {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .header__logo {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            cursor: pointer;
+        }
+
+            .header__logo img {
+                width: 42px;
+                height: 42px;
+            }
+
+        .auth-registration {
+            padding: 10px 34px;
+            color: #fff;
+            background-color: #35A4D9;
+            border-radius: 6px;
+        }
+
+        .active {
+            color: #113BA1;
+        }
+
+        .contact__bg {
+            background-image: url("https://st2.depositphotos.com/2714617/8216/i/450/depositphotos_82164860-stock-photo-contact-global-concept-top-view.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+        }
+
+            .contact__bg h1 {
+                text-align: center;
+                font-size: 62px;
+                padding-top: 100px;
+            }
+
+        .container-s {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 100px;
+            gap: 81px;
+        }
+
+        .contact__descr {
+            width: 20%;
+            display: flex;
+            justify-content: center;
+            gap: 50%;
+        }
+
+        .contact__info {
+            display: flex;
+            flex-direction: column;
+            gap: 41px;
+        }
+
+        .contact h1 {
+            font-size: 24px;
+            width: 612px;
+            text-align: center;
+        }
+
+        .contact__info p {
+            font-size: 24px;
+        }
+
+        .info {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            font-size: 24px;
+        }
+
+        .social__icons {
+            font-size: 28px;
+            display: flex;
+            gap: 24px;
+        }
+
+        .inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+            .inputs input {
+                width: 400px;
+                padding: 21px 30px;
+                border-radius: 10px;
+                border: 1px solid #000;
+            }
+
+        input:focus {
+            outline: none;
+        }
+
+        .inputs a {
+            width: 70%;
+            padding: 22px 26px;
+            border-radius: 10px;
+            background-color: #35A4D9;
+            color: white;
+            text-align: center;
+        }
+
+        .inputs p {
+            font-size: 14px;
+            line-height: 21px;
+            padding-bottom: 150px;
+        }
+
+        .footer {
+            background: #111;
+            color: #949393;
+        }
+
+        .footer__container {
+            display: flex;
+            gap: 250px;
+            padding-top: 70px;
+            padding-bottom: 54px;
+        }
+
+        .footer__item {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .footer__logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .footer__item img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+        }
+
+        .footer h6 {
+            color: #fff;
+        }
+
+        .footer h1 {
+            color: #fff;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .footer__p {
+            text-align: center;
+            color: #545454;
+            font-size: 12px;
+            padding-bottom: 24px;
+        }
+
+        .social__logo {
+            display: flex;
+            gap: 20px;
+            padding-top: 30px;
+        }
+
+        .footer__item a {
+            cursor: pointer;
+            color: #949393;
+        }
+
+        .social__logo {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<header>
+    <div class="container-s">
+        <div class="header__container">
+            <div class="header__logo" @onclick="ToMain">
+                <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+                <h1>URANUS</h1>
+            </div>
+            <ul class="header__list">
+                <li>
+                    <a @onclick="ToCourses">Все курсы</a>
+                </li>
+                <li>
+                    <a href="">Мои курсы</a>
+                </li>
+                <li>
+                    <a @onclick="HomeworkPage">Домашние задания</a>
+                </li>
+                <li>
+                    <a @onclick="ToAbout">О нас</a>
+                </li>
+                <li>
+                    <a @onclick="ToContact">Контакты</a>
+                </li>
+            </ul>
+            <div class="header__auth">
+                <a @onclick="ToLogin">Войти</a>
+                <a @onclick="ToReg" class="auth-registration">Регистрация</a>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="contact__bg">
+    <h1>Контактная информация</h1>
+</section>
+<section>
+    <div class="container-s contact">
+        <h1>Оставьте заявку, мы свяжемся и дадим подробное информацие о наших курсах</h1>
+        <div class="contact__descr">
+            <div class="contact__info">
+                <div class="info">
+                    <i class="fa-solid fa-phone"></i>
+                    <p>+998 98 369 90 69</p>
+                </div>
+                <div class="info">
+                    <i class="fa-solid fa-envelope"></i>
+                    <p>info@uranusinvest.com</p>
+                </div>
+                <div class="info">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <p>location</p>
+                </div>
+                <div class="social__icons">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-square-instagram"></i>
+                    <i class="fa-brands fa-telegram"></i>
+                </div>
+            </div>
+            <div class="inputs">
+                <input type="text" name="" id="" @bind="contact.Name" placeholder="Ваше имя">
+                <input type="text" name="" id="" @bind="contact.PhoneNumber" placeholder="Ваш номер телефона">
+                <input type="text" name="" id="" @bind="contact.DateTime" placeholder="Когда вам позвонить">
+                <a @onclick="OnValidSubmit">Заказать бесплатный звонок</a>
+                <p>Отправляя заявку, вы соглашаетесь на обработку ваших данных</p>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container-s">
+        <div class="footer__container">
+            <div class="footer__item">
+                <div class="footer__logo" @onclick="ToMain">
+                    <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
+                    <h1>URANUS</h1>
+                </div>
+                <div class="social__logo">
+                    <i class="fa-brands fa-facebook fa-2xl"></i>
+                    <i class="fa-brands fa-instagram fa-2xl"></i>
+                    <i class="fa-brands fa-telegram fa-2xl"></i>
+                </div>
+            </div>
+            <div class="footer__item">
+                <h6>ИНФОРМАЦИЯ</h6>
+                <a>Все курсы</a>
+                <a>Результаты учеников</a>
+                <a>О компании</a>
+            </div>
+            <div class="footer__item">
+                <h6>КОНТАКТЫ</h6>
+                <p>+998 98 369 90 69</p>
+                <p>info@uranusinvest.com</p>
+                <p>Location</p>
+            </div>
+        </div>
+        <p class="footer__p">
+            ©
+            2021 Uranus Invest
+        </p>
+    </div>
+</footer>
+@code {
+    Contact contact = new Contact();
+    async Task OnValidSubmit()
+    {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri("https://localhost:7030");
+
+         await client.PostAsJsonAsync("/api/Contact", contact);
+
+        
+    }
+    void ToMain()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    void ToLogin()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+    void ToReg()
+    {
+        NavigationManager.NavigateTo("/registration");
+    }
+
+    void ToCourses()
+    {
+        NavigationManager.NavigateTo("/allcourses");
+    }
+
+    void ToAbout()
+    {
+        NavigationManager.NavigateTo("/aboutus");
+    }
+    void ToContact()
+    {
+        NavigationManager.NavigateTo("/contact");
+    }
+
+    void HomeworkPage()
+    {
+        NavigationManager.NavigateTo("/homework");
+    }
+}

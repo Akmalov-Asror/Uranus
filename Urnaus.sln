@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Urnaus.Server", "Urnaus\Server\Urnaus.Server.csproj", "{490CAF6A-FD32-4E17-A1EF-A02C9AA13DA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Urnaus.Server", "Urnaus\Server\Urnaus.Server.csproj", "{490CAF6A-FD32-4E17-A1EF-A02C9AA13DA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Urnaus.Client", "Urnaus\Client\Urnaus.Client.csproj", "{5A7CA85A-4A10-4B73-81CD-F1C3DCBACC32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Urnaus.Client", "Urnaus\Client\Urnaus.Client.csproj", "{5A7CA85A-4A10-4B73-81CD-F1C3DCBACC32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Urnaus.Shared", "Urnaus\Shared\Urnaus.Shared.csproj", "{F8738592-DBD9-43A2-949E-EB4D8D0B20FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Urnaus.Shared", "Urnaus\Shared\Urnaus.Shared.csproj", "{F8738592-DBD9-43A2-949E-EB4D8D0B20FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

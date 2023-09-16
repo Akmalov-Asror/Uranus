@@ -8,4 +8,8 @@ public interface IUsersRepository
 {
     Task<User> Registration(LoginDto loginDto);
     Task<User> Login(CheckLogin checkLogin);
+    Task<User> GetUserById(string email);
+    Task UpdateUserAsync(User user);
+    Task<List<Course>> GetUserCourses(string email);
+
 }
