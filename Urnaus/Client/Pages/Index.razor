@@ -1,9 +1,9 @@
 ﻿@page "/"
 @using Urnaus.Shared
 @inject IJSRuntime JsRuntime
-@inject HttpClient Http
-@inject NavigationManager NavigationManager
+@inject UserService ApiServices
 @using Task = System.Threading.Tasks.Task;
+@using Urnaus.Client.Services
 
 <PageTitle>Index</PageTitle>
 <head>
@@ -241,39 +241,7 @@
         }
     </style>
 </head>
-<header>
-    <div class="container">
-        <div class="header__container">
-            <div class="header__logo" @onclick="ReloadPage">
-                <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
-                <h1>URANUS</h1>
-            </div>
-            <ul class="header__list">
-                <li>
-                    <a @onclick="ToAllCourses">Все курсы</a>
-                </li>
-                <li>
-                    <a >Мои курсы</a>
-                </li>
-                <li>
-                    <a @onclick="Homework">Домашние задания</a>
-                </li>
-                <li>
-                    <a @onclick="ToAbout">О нас</a>
-                </li>
-                <li>
-                    <a @onclick="ToContact">Контакты</a>
-                </li>
-            </ul>
-
-                <div class="header__auth">
-                    <a @onclick="Login">Войти</a>
-                    <a @onclick="Registration" class="auth-registration">Регистрация</a>
-                </div>
-           
-        </div>
-    </div>
-</header>
+<Header />
 <section class="section__study">
     <div class="container study">
         <h1 class="section__study-title">Хотите научиться профессионально инвестировать и всегда оставаться в плюсе?</h1>
@@ -303,108 +271,18 @@
         </div>
     </div>
 </section>
-<footer class="footer">
-    <div class="container">
-        <div class="footer__container">
-            <div class="footer__item">
-                <div class="footer__logo" @onclick="ReloadPage">
-                    <img src="https://devel.prom.uz/upload/organization_logos/ee/6e/ee6e2d1fa54c427cb384776ce3891061.png" alt="">
-                    <h1>URANUS</h1>
-                </div>
-                <div class="social__logo">
-                    <i class="fa-brands fa-facebook fa-2xl"></i>
-                    <i class="fa-brands fa-instagram fa-2xl"></i>
-                    <i class="fa-brands fa-telegram fa-2xl"></i>
-                </div>
-            </div>
-            <div class="footer__item">
-                <h6>ИНФОРМАЦИЯ</h6>
-                <a>Все курсы</a>
-                <a>Результаты учеников</a>
-                <a>О компании</a>
-            </div>
-            <div class="footer__item">
-                <h6>КОНТАКТЫ</h6>
-                <p>+998 98 369 90 69</p>
-                <p>info@uranusinvest.com</p>
-                <p>Location</p>
-            </div>
-        </div>
-        <p class="footer__p">
-            ©
-            2021 Uranus Invest
-        </p>
-    </div>
-</footer>
+<Footer />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
 @code
 {
     List<Course> courses = new List<Course>();
-    private string UserEmail { get; set; } = string.Empty;
-    private async System.Threading.Tasks.Task GetEmailFromLocalStorage()
-    {
-        var email = await JsRuntime.InvokeAsync<string>("localStorage.getItem", "email");
-
-        if (!string.IsNullOrEmpty(email))
-        {
-            UserEmail = email;
-        }
-    }
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<List<Course>>("api/Course");
-        if (result != null)
+        var result = ApiServices.GetCourseList();
+        if (result is not null)
         {
-            courses = result;
+            courses = await result;
         }
-    }
-
-    void Login()
-    {
-        NavigationManager.NavigateTo("/login");
-    }
-
-    void Registration()
-    {
-        NavigationManager.NavigateTo("/registration");
-    }
-
-    private async Task ReloadPage()
-    {
-        await JsRuntime.InvokeVoidAsync("location.reload");
-    }
-    void ToContact()
-    {
-        NavigationManager.NavigateTo("/contact");
-    }
-
-    void ToAllCourses()
-    {
-        NavigationManager.NavigateTo("/allcourses");
-    }
-    void ToAbout()
-    {
-        NavigationManager.NavigateTo("/aboutus");
-    }
-
-    void Homework()
-    {
-        NavigationManager.NavigateTo("/homework");
-    }
-
-    void UserCourse()
-    {
-        NavigationManager.NavigateTo("/userCourse");
-    }
-    private async System.Threading.Tasks.Task ClearLocalStorage()
-    {
-        await JsRuntime.InvokeVoidAsync("clearLocalStorage");
-    }
-
-    async void LogOut()
-    {
-        await ClearLocalStorage();
-        NavigationManager.NavigateTo("/");
     }
 }
